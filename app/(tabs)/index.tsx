@@ -1,155 +1,157 @@
-import React, { useState } from 'react';
-import { View, ScrollView, Text, Image, Button, TextInput, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, Button, StyleSheet, Image} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const Box = ({ backgroundColor, width, height }) => {
+// Компонент экрана Home
+function HomeScreen({ navigation }) {
   return (
-    <View style={{ backgroundColor, width, height, margin: 10 }}>
-      <Text style={styles.boxText}>Моя коробка</Text>
+    <View style={styles.screenContainer}>
+      <Text>Home Screen</Text>
+      <Button
+        title="О приложении"
+        onPress={() => navigation.navigate('About')}
+      />
     </View>
+  );
+}
+
+// Компонент экрана "О приложении"
+function AboutScreen() {
+  return (
+    <View style={styles.screenContainer}>
+      <Text>страница о нас</Text>
+    </View>
+  );
+}
+
+// Компонент экрана News
+function NewsScreen() {
+  return (
+    <View style={styles.screenContainer}>
+      <Text>страница новостей</Text>
+    </View>
+  );
+}
+
+// Компонент экрана Chat
+function ChatScreen() {
+  return (
+    <View style={styles.screenContainer}>
+      <Text>страница чата</Text>
+    </View>
+  );
+}
+
+// Компонент экрана Settings
+function SettingsScreen() {
+  return (
+    <View style={styles.screenContainer}>
+      <Text>Страница настроке</Text>
+    </View>
+  );
+}
+
+// Создание стека для Home
+const Stack = createNativeStackNavigator();
+const HomeStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerTitle: () => (
+            <View style={styles.headerTitleContainer}>
+              <Image source={require('../../assets/images/free-icon-man-3439472.png')} style={styles.icon} />
+              <Text style={styles.headerTitle}>Home</Text>
+            </View>
+          ),
+        }}
+      />
+      <Stack.Screen name="About" component={AboutScreen} />
+    </Stack.Navigator>
   );
 };
 
-export default function App() {
-  const [pressedCount, setPressedCount] = useState(0);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [name, setName] = useState('');
-
-  const handlePress = () => {
-    const newCount = pressedCount + 1;
-    setPressedCount(newCount);
-    if (newCount >= 3) {
-      setIsButtonDisabled(true);
-    }
-  };
-
-  const resetButton = () => {
-    setIsButtonDisabled(false);
-    setPressedCount(0);
-  };
-
+// Создание табов
+const Tab = createBottomTabNavigator();
+const TabNavigation = () => {
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.boxContainer}>
-        <Box backgroundColor="#ffcccb" width={200} height={100} />
-      </View>
+    <Tab.Navigator>
+      <Tab.Screen
+        name="HomePage"
+        component={HomeStack}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="ios-home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="News"
+        component={NewsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="ios-newspaper" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Chat"
+        component={ChatScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="ios-chatbubble" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="ios-settings" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
-      {/* Кнопки и счетчик */}
-      <View style={styles.buttonContainer}>
-        <Text style={styles.text}>
-          {pressedCount > 0
-            ? 'The button was pressed '+pressedCount+ ' times!'
-            : "The button isn't pressed yet"}
-        </Text>
-
-        <Button
-          title="Press me"
-          onPress={handlePress}
-          disabled={isButtonDisabled} // Блокируем кнопку после 3 нажатий
-        />
-
-        <Button
-          title="Reset Button"
-          onPress={resetButton}
-          style={styles.resetButton}
-        />
-      </View>
-
-      {/* Поле ввода имени */}
-      <View style={styles.nameInputContainer}>
-        <Text style={styles.nameText}>
-          {name ? 'Hi ' +name +'!' : 'What is your name?'}
-        </Text>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={text => setName(text)} // Обновляем имя по мере ввода
-          placeholder="Enter your name"
-        />
-      </View>
-    
-      <View style={styles.simpleView}>
-        <Text style={styles.text}>Простой View с текстом</Text>
-      </View>
-
-      <View style={styles.imageView}>
-        <Text style={styles.text}>Изображение</Text>
-        <Image source={require('@/assets/images/coal-price.jpg')} style={styles.image} />
-      </View>
-
-      <ScrollView style={styles.scrollView}>
-        <Text style={styles.text}>Текст в ScrollView</Text>
-        <Text style={styles.text}>Ещё сверху текст</Text>
-        <Text style={styles.text}>Доп текст для скролла</Text>
-        <Text style={styles.text}>Ещё сверху текст</Text>
-        <Text style={styles.text}>Ещё сверху текст</Text>
-        <Text style={styles.text}>Ещё сверху текст</Text>
-        <Text style={styles.text}>Ещё сверху текст</Text>
-        <Text style={styles.text}>Ещё сверху текст</Text>
-        <Text style={styles.text}>Ещё сверху текст</Text>
-        <Text style={styles.text}>Ещё сверху текст</Text>
-      </ScrollView>
-      </ScrollView>
+// Главный компонент App с навигацией
+export default function App() {
+  return (
+    <NavigationContainer independent={true}>
+      <TabNavigation />
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screenContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  simpleView: {
-    padding: 20,
-    backgroundColor: '#f0f0f0',
-    marginBottom: 20,
-  },
-  imageView: {
-    padding: 20,
-    backgroundColor: '#e0f7fa',
-    marginBottom: 20,
-    alignItems: 'center',
-  },
-  scrollView: {
-    padding: 20,
-    backgroundColor: '#ffecb3',
-    height: 200,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginTop: 10,
-  },
-  text: {
-    fontSize: 16,
-  },
-  buttonContainer: {
-    padding: 20,
-    alignItems: 'center',
     justifyContent: 'center',
-  },
-  resetButton: {
-    marginTop: 10,
-  },
-  nameInputContainer: {
-    padding: 16,
     alignItems: 'center',
   },
-  nameText: {
-    marginVertical: 16,
-    fontSize: 18,
-  },
-  textInput: {
-    padding: 8,
-    backgroundColor: '#f5f5f5',
-    width: '80%',
-    borderRadius: 4,
-  },
-  boxContainer: {
-    padding: 16,
+  headerTitleContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  boxText: {
-    color: '#fff',
-    textAlign: 'center',
-    paddingTop: 60, 
+  icon: {
+    width: 50,  // Укажите нужную ширину
+    height: 50, // Укажите нужную высоту
+    marginRight: 10,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 8, // Отступ между иконкой и текстом
+  },
+  headerIcon: {
+    marginRight: 4, // Отступ между иконкой и текстом
   },
 });
