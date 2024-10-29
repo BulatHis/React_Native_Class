@@ -1,157 +1,95 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet, Image} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 
-// Компонент экрана Home
-function HomeScreen({ navigation }) {
-  return (
-    <View style={styles.screenContainer}>
-      <Text>Home Screen</Text>
-      <Button
-        title="О приложении"
-        onPress={() => navigation.navigate('About')}
-      />
+export default function TodoList() {
+  const [tasks, setTasks] = useState([]);//   список задач
+  const [task, setTask] = useState(''); // если задача новая
+
+  // Добавление новой задачи
+  const addTask = () => {
+    if (task.trim()) {
+      setTasks([...tasks, { id: Date.now().toString(), text: task, completed: false }]);
+      setTask(''); // Очистка
+    }
+  };
+
+  const toggleTask = (id) => { //on\off
+    setTasks(tasks.map(item => 
+      item.id === id ? { ...item, completed: !item.completed } : item
+    ));
+  };
+
+  // удаление
+  const deleteTask = (id) => {
+    setTasks(tasks.filter(item => item.id !== id));
+  };
+
+  const renderItem = ({ item }) => (
+    <View style={styles.taskContainer}>
+      <TouchableOpacity onPress={() => toggleTask(item.id)}>
+        <Text style={[styles.taskText, item.completed && styles.completed]}>
+          {item.text}
+        </Text>
+      </TouchableOpacity>
+      <Button title="Delete" color="#ff5c5c" onPress={() => deleteTask(item.id)} />
     </View>
   );
-}
 
-// Компонент экрана "О приложении"
-function AboutScreen() {
   return (
-    <View style={styles.screenContainer}>
-      <Text>страница о нас</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>TODO List</Text>
+      
+      <TextInput
+        style={styles.input}
+        placeholder="Add a new task"
+        value={task}
+        onChangeText={setTask}
+      />
+      <Button title="Add Task" onPress={addTask} />
+
+      <Text> 'Чтобы пометить выполненой, надо нажать на название' </Text>
+
+      <FlatList
+        data={tasks}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
     </View>
-  );
-}
-
-// Компонент экрана News
-function NewsScreen() {
-  return (
-    <View style={styles.screenContainer}>
-      <Text>страница новостей</Text>
-    </View>
-  );
-}
-
-// Компонент экрана Chat
-function ChatScreen() {
-  return (
-    <View style={styles.screenContainer}>
-      <Text>страница чата</Text>
-    </View>
-  );
-}
-
-// Компонент экрана Settings
-function SettingsScreen() {
-  return (
-    <View style={styles.screenContainer}>
-      <Text>Страница настроке</Text>
-    </View>
-  );
-}
-
-// Создание стека для Home
-const Stack = createNativeStackNavigator();
-const HomeStack = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          headerTitle: () => (
-            <View style={styles.headerTitleContainer}>
-              <Image source={require('../../assets/images/free-icon-man-3439472.png')} style={styles.icon} />
-              <Text style={styles.headerTitle}>Home</Text>
-            </View>
-          ),
-        }}
-      />
-      <Stack.Screen name="About" component={AboutScreen} />
-    </Stack.Navigator>
-  );
-};
-
-// Создание табов
-const Tab = createBottomTabNavigator();
-const TabNavigation = () => {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name="HomePage"
-        component={HomeStack}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="ios-home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="News"
-        component={NewsScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="ios-newspaper" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Chat"
-        component={ChatScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="ios-chatbubble" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="ios-settings" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
-};
-
-// Главный компонент App с навигацией
-export default function App() {
-  return (
-    <NavigationContainer independent={true}>
-      <TabNavigation />
-    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  screenContainer: {
+  container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#fff',
   },
-  headerTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  icon: {
-    width: 50,  // Укажите нужную ширину
-    height: 50, // Укажите нужную высоту
-    marginRight: 10,
-  },
-  headerTitle: {
-    fontSize: 20,
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
-    marginLeft: 8, // Отступ между иконкой и текстом
+    marginBottom: 20,
+    textAlign: 'center',
   },
-  headerIcon: {
-    marginRight: 4, // Отступ между иконкой и текстом
+  input: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
+    marginBottom: 20,
+  },
+  taskContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  taskText: {
+    fontSize: 16,
+  },
+  completed: {
+    textDecorationLine: 'line-through',
+    color: 'gray',
   },
 });
