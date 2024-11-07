@@ -1,6 +1,7 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "target": "ES6",
     "strict": true,
     "paths": {
       "@/*": [
@@ -13,5 +14,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "app/(tabs)/ItemStore.js"  ]
 }
