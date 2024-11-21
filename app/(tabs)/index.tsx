@@ -1,11 +1,18 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import AppNavigator from './AppNavigation';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import TodoList from './TodoList';
 
 export default function App() {
-    return (
-        <NavigationContainer independent={true}>
-            <AppNavigator />
-        </NavigationContainer>
-    );
+  return (
+    <SafeAreaView style={styles.container}>
+      <TodoList />
+    </SafeAreaView>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
