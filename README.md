@@ -1,2 +1,2 @@
-# Task 6
-![alt text](image-4.png)
+# Task 7
+![alt text](image-5.png)
