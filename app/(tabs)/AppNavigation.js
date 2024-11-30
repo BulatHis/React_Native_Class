@@ -15,15 +15,15 @@ const HomeStack = () => (
     </Stack.Navigator>
 );
 
-// Конфигурация для диплинков
+
 const linking = {
-    prefixes: ['myapp://'], // Замените на свой URL-префикс
+    prefixes: ['myapp://'],
     config: {
         screens: {
-            Home: 'home', // Диплинк для вкладки Home
-            News: 'news', // Диплинк для вкладки News
-            Chat: 'chat', // Диплинк для вкладки Chat
-            Settings: 'settings', // Диплинк для вкладки Settings
+            Home: 'home', 
+            News: 'news', 
+            Chat: 'chat', 
+            Settings: 'settings', 
         },
     },
 };
