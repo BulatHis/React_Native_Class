@@ -1,7 +1,7 @@
 import { LinkingOptions, getActionFromState, getStateFromPath } from '@react-navigation/native';
 import { Linking } from 'react-native'; 
 
-const linkingPrefix = 'mypostapp://';  
+const linkingPrefix = 'http://localhost:8081/';  
 
 export class DeepLinking {
   static linking: LinkingOptions<{}> = {
