@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import ItemList from './ItemList';
 import { NavigationContainer } from '@react-navigation/native';
+import InitScreen from './InitScreen'; 
+import AuthMainScreen from './AuthMainScreen'; 
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -52,8 +54,8 @@ const AppNavigator = () => (
             })}
         >
             <Tab.Screen name="Home" component={HomeStack} options={{ title: 'Home' }} />
-            <Tab.Screen name="News" component={HomeStack} options={{ title: 'News' }} />
-            <Tab.Screen name="Chat" component={HomeStack} options={{ title: 'Chat' }} />
+            <Tab.Screen name="News" component={InitScreen} options={{ title: 'News' }} />
+            <Tab.Screen name="Chat" component={AuthMainScreen} options={{ title: 'Chat' }} />
             <Tab.Screen name="Settings" component={HomeStack} options={{ title: 'Settings' }} />
         </Tab.Navigator>
     </NavigationContainer>

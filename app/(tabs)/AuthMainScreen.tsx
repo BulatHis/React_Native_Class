@@ -5,7 +5,7 @@ import { View, Text } from 'react-native';
 const AuthMainScreen = () => {
   return (
     <View>
-      <Text>Auth Main Screen</Text>
+      <Text>Chat</Text>
     </View>
   );
 };

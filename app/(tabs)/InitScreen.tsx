@@ -5,7 +5,7 @@ import { View, Text } from 'react-native';
 const InitScreen = () => {
   return (
     <View>
-      <Text>Init Screen</Text>
+      <Text>News</Text>
     </View>
   );
 };
