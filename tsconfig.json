@@ -14,5 +14,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "app/(tabs)/ItemStore.js"  ]
+, "app/(tabs)/ItemStore.ts", "app/(tabs)/ItemService.js", "app/(tabs)/ItemRepository.js", "app/(tabs)/ItemList.js"  ]
 }

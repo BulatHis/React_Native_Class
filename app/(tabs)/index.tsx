@@ -1,8 +1,14 @@
 // Импорт необходимых компонентов
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Button, Switch } from 'react-native';
+import { StyleSheet, View, Text, Button, Switch } from 'react-native'
+import AppLoading from 'expo-app-loading'
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    Inter_900Black,
+  })
+
   const [isRedTheme, setIsRedTheme] = useState(false);
 
   // Функция для переключения темы
@@ -10,10 +16,13 @@ export default function App() {
     setIsRedTheme(!isRedTheme);
   };
 
+  if (!fontsLoaded) {
+    return <AppLoading />
+  } else {
   return (
     <View style={[styles.container, isRedTheme ? styles.redTheme : styles.blueTheme]}>
-      <Text style={styles.title}>Демонстрация смены темы</Text>
-      <Text style={styles.description}>Переключатель</Text>
+      <Text style={{ fontFamily: 'Inter_900Black', fontSize: 40 }}>Демонстрация смены темы</Text>
+      <Text style={styles.label}>Переключатель</Text>
       
       <View style={styles.controls}>
         <Switch
@@ -39,6 +48,7 @@ export default function App() {
       </View>
     </View>
   );
+}
 }
 
 const styles = StyleSheet.create({
